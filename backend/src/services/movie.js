@@ -24,7 +24,7 @@ class MovieService {
       const limit = parseInt(query.limit);
       const offset = parseInt(query.offset);
       const queriedMovies = this.movies.slice(offset, offset + limit);
-      return { status:'Ok', body: queriedMovies}
+      return queriedMovies
     }
 
     findAll() {
@@ -34,7 +34,7 @@ class MovieService {
     create(data) {
       const newMovie = { id: this.lastId + 1, ...data };
       this.movies.push(newMovie);
-      return { status: 'Created',  body: newMovie};
+      return newMovie
     }
 }
 
