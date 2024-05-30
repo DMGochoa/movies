@@ -19,6 +19,13 @@ class MovieController {
     const createdMovie = await movieService.create(body);
     res.status(201).json(createdMovie);
   }
+
+  async createRating(req, res) {
+    const { id } = req.params;
+    const { value } = req.body;
+    const updatedRating = await movieService.updateRating(id, value);
+    res.status(201).json(updatedRating);
+  }
 }
 
 module.exports = MovieController;

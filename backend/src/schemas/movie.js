@@ -23,11 +23,27 @@ const category = Joi.string()
                   'any.only': 'Category is not in the correct format. Only the following categories are allowed: Action, Science Fiction, Drama, Thriller, Horror, and Comedy.'
                 });
 const releaseYear = Joi.number().integer().min(1888).max(currentYear);
+const rateAverage = Joi.number().min(1).max(5);
+const newRate = Joi.number()
+                .integer()
+                .min(1)
+                .max(5)
+                .messages({
+                  'number.base': 'Rating must be a number',
+                  'number.empty': 'Rating must not be empty',
+                  'number.min': 'Rating must be at least {#limit}',
+                  'number.max': 'Rating must be at most {#limit}'
+                });
 
 const createMovieSchema = Joi.object({
     title: title.required(),
     category: category.required(),
-    releaseYear: releaseYear.required()
+    releaseYear: releaseYear.required(),
+    rateAverage: rateAverage.required(),
 });
 
-module.exports = { createMovieSchema };
+const updateRatingSchema = Joi.object({
+  value: newRate.required()
+});
+
+module.exports = { createMovieSchema, updateRatingSchema };

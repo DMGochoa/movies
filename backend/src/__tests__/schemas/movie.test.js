@@ -3,14 +3,15 @@ const validatorHandler = require('../../middlewares/validatorHandler');
 const { createMovieSchema } = require('../../schemas/movie');
 const boom = require('@hapi/boom');
 
-describe('validatorHandler', () => {
+describe('Validation movie scheme', () => {
   const middleware = validatorHandler(createMovieSchema, 'body');
   it('Title field must not be empty', () => {
     const request = {
       body: {
         title: '',
         category: 'Science Fiction',
-        releaseYear: 2010
+        releaseYear: 2010,
+        rateAverage: 4.5
       }
     };
     const next = jest.fn();
@@ -27,7 +28,8 @@ describe('validatorHandler', () => {
       body: {
         title: 'The Matrix 2@',
         category: 'Science Fiction',
-        releaseYear: 2010
+        releaseYear: 2010,
+        rateAverage: 4.5
       }
     };
     const next = jest.fn();
@@ -44,7 +46,8 @@ describe('validatorHandler', () => {
       body: {
         title: 'a'.repeat(51),
         category: 'Science Fiction',
-        releaseYear: 2010
+        releaseYear: 2010,
+        rateAverage: 4.5
       }
     };
     const next = jest.fn();
@@ -62,7 +65,8 @@ describe('validatorHandler', () => {
       body: {
         title: 'Inception',
         category: '',
-        releaseYear: 2010
+        releaseYear: 2010,
+        rateAverage: 4.5
       }
     };
     const next = jest.fn();
@@ -80,7 +84,8 @@ describe('validatorHandler', () => {
       body: {
         title: 'Inception',
         category: 'Romance',
-        releaseYear: 2010
+        releaseYear: 2010,
+        rateAverage: 4.5
       }
     };
     const next = jest.fn();
@@ -97,7 +102,8 @@ describe('validatorHandler', () => {
       body: {
         title: 'Inception',
         category: 'Science Fiction',
-        releaseYear: 2010
+        releaseYear: 2010,
+        rateAverage: 4.5
       }
     };
     const next = jest.fn();
@@ -107,4 +113,23 @@ describe('validatorHandler', () => {
     expect(next).toHaveBeenCalled();
     expect(next).not.toHaveBeenCalledWith(expect.any(Error));
   });
+
+  it('Rating value should be between 1 and 5', () => {
+    const newRateSchema = require('../../schemas/movie').updateRatingSchema;
+    const middleware = validatorHandler(newRateSchema, 'body');
+    const request = {
+      body: {
+        value: 6
+      }
+    };
+    const next = jest.fn();
+    middleware(request, {}, next);
+    expect(next).toHaveBeenCalledWith(expect.any(boom.Boom));
+    const errorArgument = next.mock.calls[0][0];
+    expect(errorArgument.isBoom).toBe(true);
+    expect(errorArgument.output.statusCode).toBe(400);
+    expect(errorArgument.output.payload.message).toBe("Rating must be at most 5");
+  });
 });
+
+
