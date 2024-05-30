@@ -15,9 +15,7 @@ class MovieService {
                 { count: { min: 1, max: 5 } }
                 ),
             category: faker.commerce.department(),
-            realeseYear: faker.date.birthdate(
-                { min: 1900, max: 2000, mode: 'year' }
-                ),
+            releaseYear: faker.date.past({ years: 40}).getFullYear(),
         });
       }
     }
