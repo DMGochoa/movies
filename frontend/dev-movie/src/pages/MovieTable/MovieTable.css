@@ -1,0 +1,21 @@
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.table-movies {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-title {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table-data {
+  border: 1px solid #ddd;
+  padding: '8px';
+}

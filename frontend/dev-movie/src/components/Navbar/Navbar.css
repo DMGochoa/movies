@@ -1,5 +1,8 @@
 .navbar-container {
   display: flex;
+  position: fixed;
+  z-index: 10;
+  top: 0;
   width: 100%;
   align-items: center;
   justify-content: space-between;
@@ -10,20 +13,3 @@
 .navbar-container h1 {
   margin: 0;
 }
-
-.content-container {
-  margin-top: 20px;
-  padding: 0px 200px;
-}
-
-.table-movies{
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table-title {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-
