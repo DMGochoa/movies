@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import NewMovieDialog from './../../components/NewMovieDialog';
-import Layout from './../../components/Layout'
+import NewRatingDialog from './../../components/NewRatingDialog';
+import Layout from './../../components/Layout';
 import axios from 'axios';
-import './MovieTable.css'
+import './MovieTable.css';
 
 const MovieTable = () => {
   const [movies, setMovies] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
+  const [showRatingDialog, setShowRatingDialog] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -21,7 +24,6 @@ const MovieTable = () => {
   }, []);
 
   const handleAddNewClick = () => {
-    console.log('Add new movie clicked');
     setShowDialog(true);
   };
 
@@ -31,6 +33,23 @@ const MovieTable = () => {
 
   const handleSaveNewMovie = (newMovie) => {
     setMovies([...movies, newMovie]);
+  };
+
+  const handleRateClick = (movie) => {
+    setSelectedMovie(movie);
+    setShowRatingDialog(true);
+  };
+
+  const handleRatingDialogClose = () => {
+    setShowRatingDialog(false);
+    setSelectedMovie(null);
+  };
+
+  const handleSaveRating = (updatedMovie) => {
+    const updatedMovies = movies.map((movie) =>
+      movie.title === updatedMovie.title ? updatedMovie : movie
+    );
+    setMovies(updatedMovies);
   };
 
   return (
@@ -45,14 +64,20 @@ const MovieTable = () => {
             <th className='table-title'>Title</th>
             <th className='table-title'>Release Date</th>
             <th className='table-title'>Category</th>
+            <th className='table-title'>Rate Average</th>
+            <th className='table-title'>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {movies?.map((movie) => (
+          {movies.map((movie) => (
             <tr key={movie.title}>
               <td className='table-data'>{movie.title}</td>
               <td className='table-data'>{movie.releaseYear}</td>
               <td className='table-data'>{movie.category}</td>
+              <td className='table-data'>{movie.rateAverage.toFixed(1)} ({movie.voteCount})</td>
+              <td className='table-data'>
+                <button onClick={() => handleRateClick(movie)}>Add Rate</button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -60,8 +85,16 @@ const MovieTable = () => {
       {showDialog && (
         <NewMovieDialog onClose={handleDialogClose} onSave={handleSaveNewMovie} />
       )}
+      {showRatingDialog && selectedMovie && (
+        <NewRatingDialog
+          movie={selectedMovie}
+          onClose={handleRatingDialogClose}
+          onSave={handleSaveRating}
+        />
+      )}
     </Layout>
   );
 };
 
 export default MovieTable;
+
