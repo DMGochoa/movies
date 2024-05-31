@@ -8,6 +8,7 @@ const NewRatingDialog = ({ movie, onClose, onSave }) => {
   const handleSave = async () => {
     try {
       const response = await axios.post(`http://localhost:3000/api/movies/${movie.id}/ratings`, { value: rating });
+      console.log('Updated movie:', response.data)
       const updatedMovie = response.data;
       onSave(updatedMovie);
       onClose();

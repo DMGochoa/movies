@@ -46,6 +46,7 @@ const MovieTable = () => {
   };
 
   const handleSaveRating = (updatedMovie) => {
+    console.log('updatedMovie:', updatedMovie);
     const updatedMovies = movies.map((movie) =>
       movie.title === updatedMovie.title ? updatedMovie : movie
     );
@@ -74,7 +75,7 @@ const MovieTable = () => {
               <td className='table-data'>{movie.title}</td>
               <td className='table-data'>{movie.releaseYear}</td>
               <td className='table-data'>{movie.category}</td>
-              <td className='table-data'>{movie.rateAverage.toFixed(1)} ({movie.voteCount})</td>
+              <td className='table-data'>{movie.rateAverage} ({movie.voteCount})</td>
               <td className='table-data'>
                 <button onClick={() => handleRateClick(movie)}>Add Rate</button>
               </td>

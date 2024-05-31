@@ -8,6 +8,7 @@ const NewMovieDialog = ({ onClose, onSave }) => {
   const [title, setTitle] = useState('');
   const [releaseYear, setReleaseYear] = useState('');
   const [category, setCategory] = useState('');
+  const [rateAverage, setRateAverage] = useState('');
   const [errors, setErrors] = useState({});
 
   const validateInputs = () => {
@@ -31,6 +32,12 @@ const NewMovieDialog = ({ onClose, onSave }) => {
       errors.category = 'Must not be empty.';
     }
 
+    if (!rateAverage) {
+      errors.rateAverage = 'Must not be empty.';
+    } else if (isNaN(rateAverage) || rateAverage < 1 || rateAverage > 5) {
+      errors.rateAverage = 'Must be greater than or equal to 1 and less than or equal to 5.';
+    }
+
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -41,7 +48,7 @@ const NewMovieDialog = ({ onClose, onSave }) => {
     }
 
     try {
-      const newMovie = { title, releaseYear, category };
+      const newMovie = { title, releaseYear, category, rateAverage };
       await axios.post('http://localhost:3000/api/movies', newMovie);
       onSave(newMovie);
       onClose();
@@ -88,6 +95,16 @@ const NewMovieDialog = ({ onClose, onSave }) => {
           ))}
         </select>
         {errors.category && <div style={{ color: 'red' }}>{errors.category}</div>}
+      </div>
+      <div style={{ marginBottom: '10px' }}>
+        <label>Rating average:</label>
+        <input
+          type="text"
+          value={rateAverage}
+          onChange={(e) => setRateAverage(e.target.value)}
+          style={{ width: '100%' }}
+        />
+        {errors.rateAverage && <div style={{ color: 'red' }}>{errors.rateAverage}</div>}
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <button onClick={onClose}>Cancel</button>

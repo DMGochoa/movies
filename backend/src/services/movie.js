@@ -1,5 +1,4 @@
-const { boom } = require('@hapi/boom');
-
+const boom = require('@hapi/boom');
 const { models } = require('./../libs/sequelize');
 
 class MovieService {
@@ -21,7 +20,6 @@ class MovieService {
     }
 
     async create(data) {
-      console.log(data)
       const newMovie = await models.Movie.create(data);
       return newMovie
     }
@@ -36,6 +34,9 @@ class MovieService {
 
     async updateRating(id, rating) {
       const oldData = await this.findById(id);
+      console.log('oldrateAverage:', oldData.rateAverage);
+      console.log('oldvoteCount:', oldData.voteCount);
+      console.log('rating:', rating);
       const newRateAverage = parseFloat(
         ((oldData.rateAverage * oldData.voteCount + rating) / (oldData.voteCount + 1)).toFixed(1)
         );
@@ -44,7 +45,9 @@ class MovieService {
         rateAverage: newRateAverage,
         voteCount: newVoteCount,
       });
-      return updatedMovie;
+      console.log('updatedMovie:', updatedMovie);
+
+      return { ...updatedMovie.dataValues, rateAverage: newRateAverage, voteCount: newVoteCount };
     }
 }
 
