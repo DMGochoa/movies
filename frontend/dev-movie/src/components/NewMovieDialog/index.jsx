@@ -2,14 +2,13 @@ import { useState } from 'react';
 import axios from 'axios';
 import './NewMovieDialog.css';
 
-const categories = ['Action', 'Drama', 'Thriller', 'Horror', 'Science Fiction'];
-
 const NewMovieDialog = ({ onClose, onSave }) => {
   const [title, setTitle] = useState('');
   const [releaseYear, setReleaseYear] = useState('');
   const [category, setCategory] = useState('');
-  const [rateAverage, setRateAverage] = useState('');
   const [errors, setErrors] = useState({});
+
+  const categories = ['Action', 'Drama', 'Thriller', 'Horror', 'Science Fiction'];
 
   const validateInputs = () => {
     const errors = {};
@@ -32,12 +31,6 @@ const NewMovieDialog = ({ onClose, onSave }) => {
       errors.category = 'Must not be empty.';
     }
 
-    if (!rateAverage) {
-      errors.rateAverage = 'Must not be empty.';
-    } else if (isNaN(rateAverage) || rateAverage < 1 || rateAverage > 5) {
-      errors.rateAverage = 'Must be greater than or equal to 1 and less than or equal to 5.';
-    }
-
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -48,7 +41,7 @@ const NewMovieDialog = ({ onClose, onSave }) => {
     }
 
     try {
-      const newMovie = { title, releaseYear, category, rateAverage };
+      const newMovie = { title, releaseYear, category };
       await axios.post('http://localhost:3000/api/movies', newMovie);
       onSave(newMovie);
       onClose();
@@ -58,57 +51,47 @@ const NewMovieDialog = ({ onClose, onSave }) => {
   };
 
   return (
-    <div style={{ border: '1px solid #ddd', padding: '20px', width: '300px', margin: '20px auto' }}>
-      <h2>Add New Movie</h2>
-      <div style={{ marginBottom: '10px' }}>
-        <label>Title:</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={{ width: '100%' }}
-        />
-        {errors.title && <div style={{ color: 'red' }}>{errors.title}</div>}
-      </div>
-      <div style={{ marginBottom: '10px' }}>
-        <label>Release date:</label>
-        <input
-          type="text"
-          value={releaseYear}
-          onChange={(e) => setReleaseYear(e.target.value)}
-          style={{ width: '100%' }}
-        />
-        {errors.releaseYear && <div style={{ color: 'red' }}>{errors.releaseYear}</div>}
-      </div>
-      <div style={{ marginBottom: '10px' }}>
-        <label>Category:</label>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          style={{ width: '100%' }}
-        >
-          <option value="">Select a category</option>
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-        {errors.category && <div style={{ color: 'red' }}>{errors.category}</div>}
-      </div>
-      <div style={{ marginBottom: '10px' }}>
-        <label>Rating average:</label>
-        <input
-          type="text"
-          value={rateAverage}
-          onChange={(e) => setRateAverage(e.target.value)}
-          style={{ width: '100%' }}
-        />
-        {errors.rateAverage && <div style={{ color: 'red' }}>{errors.rateAverage}</div>}
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <button onClick={onClose}>Cancel</button>
-        <button onClick={handleSave}>Save</button>
+    <div className="dialog-container">
+      <div className="dialog-content">
+        <h2 className="dialog-header">New Movie</h2>
+        <button className="dialog-close" onClick={onClose}>X</button>
+        <div className="dialog-body">
+          <div className="dialog-field">
+            <label>Title:</label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength="50"
+            />
+            {errors.title && <div className="dialog-error">{errors.title}</div>}
+          </div>
+          <div className="dialog-field">
+            <label>Release date:</label>
+            <input
+              type="text"
+              value={releaseYear}
+              onChange={(e) => setReleaseYear(e.target.value)}
+            />
+            {errors.releaseYear && <div className="dialog-error">{errors.releaseYear}</div>}
+          </div>
+          <div className="dialog-field">
+            <label>Category:</label>
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="">Select a category</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+            {errors.category && <div className="dialog-error">{errors.category}</div>}
+          </div>
+        </div>
+        <div className="dialog-actions">
+          <button className="dialog-cancel" onClick={onClose}>Cancel</button>
+          <button className="dialog-save" onClick={handleSave}>Save</button>
+        </div>
       </div>
     </div>
   );

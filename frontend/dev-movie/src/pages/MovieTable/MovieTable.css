@@ -5,17 +5,166 @@
   width: 100%;
 }
 
+.table-header h2 {
+  margin: 0;
+}
+
+.table-header button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.table-header button:hover {
+  background-color: #218838;
+}
+
+.table-container {
+  display: block;
+}
+
 .table-movies {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 .table-title {
   border: 1px solid #ddd;
   padding: 8px;
+  background-color: #f4f4f4;
+  text-align: left;
 }
 
 .table-data {
   border: 1px solid #ddd;
-  padding: '8px';
+  padding: 8px;
+}
+
+.table-data .rating {
+  display: flex;
+  align-items: center;
+}
+
+.table-data .rating span {
+  color: gold;
+  margin-right: 5px;
+}
+
+.table-data .actions {
+  display: flex;
+  justify-content: center;
+}
+
+.table-data button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.table-data button:hover {
+  background-color: #0056b3;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+}
+
+.pagination-controls button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.pagination-controls button:hover {
+  background-color: #0056b3;
+}
+
+.pagination-controls span {
+  margin: 0 10px;
+}
+
+.mobile-list {
+  display: none;
+}
+
+
+@media (max-width: 768px) {
+  .table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-container {
+    display: none;
+  }
+
+  .mobile-list {
+    display: block;
+  }
+
+  .mobile-list-item {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .mobile-list-header {
+    background-color: #f4f4f4;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .mobile-list-content {
+    padding: 10px;
+    background-color: #fff;
+  }
+
+  .mobile-list-content p {
+    margin: 5px 0;
+  }
+
+  .mobile-list-content .rating {
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-list-content .rating span {
+    color: gold;
+    margin-right: 5px;
+  }
+
+  .mobile-list-content button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .mobile-list-content button:hover {
+    background-color: #0056b3;
+  }
 }

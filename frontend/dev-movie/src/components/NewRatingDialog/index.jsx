@@ -7,8 +7,7 @@ const NewRatingDialog = ({ movie, onClose, onSave }) => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.post(`http://localhost:3000/api/movies/${movie.id}/ratings`, { value: rating });
-      console.log('Updated movie:', response.data)
+      const response = await axios.post(`http://localhost:3000/api/movies/${movie.id}/rate`, { rating });
       const updatedMovie = response.data;
       onSave(updatedMovie);
       onClose();
@@ -19,26 +18,30 @@ const NewRatingDialog = ({ movie, onClose, onSave }) => {
 
   return (
     <div className="dialog-container">
-      <h2 className="dialog-header">Add Rate</h2>
-      <p className="dialog-movie-title">Title: {movie.title}</p>
-      <div className="dialog-rating">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <span
-            key={star}
-            style={{ color: star <= rating ? 'gold' : 'grey' }}
-            onClick={() => setRating(star)}
-          >
-            ★
-          </span>
-        ))}
-      </div>
-      <div className="dialog-actions">
-        <button onClick={onClose}>Cancel</button>
-        <button onClick={handleSave}>Save</button>
+      <div className="dialog-content">
+        <h2 className="dialog-header">Add Rate</h2>
+        <button className="dialog-close" onClick={onClose}>X</button>
+        <div className="dialog-body">
+          <p>Title: {movie.title}</p>
+          <div className="dialog-rating">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                className={`star ${star <= rating ? 'filled' : ''}`}
+                onClick={() => setRating(star)}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="dialog-actions">
+          <button className="dialog-cancel" onClick={onClose}>Cancel</button>
+          <button className="dialog-save" onClick={handleSave}>Save</button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default NewRatingDialog;
-
